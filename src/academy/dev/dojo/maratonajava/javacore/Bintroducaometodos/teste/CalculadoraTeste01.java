@@ -1,4 +1,4 @@
-package rapdio.Bintroducaometodos.teste;
+package academy.dev.dojo.maratonajava.javacore.Bintroducaometodos.teste;
 
 import academy.dev.dojo.maratonajava.javacore.Bintroducaometodos.dominio.Calculadora;
 
