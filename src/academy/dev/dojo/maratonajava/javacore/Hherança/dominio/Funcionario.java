@@ -9,7 +9,7 @@ public class Funcionario extends Pessoa{
     }
 
     public void relatorioPagamento(){
-        System.out.println("Eu " this.getNome()+ " recebi o salario de " +this.salario);
+        System.out.println("Eu " +this.getNome()+ " recebi o salario de " +this.salario);
     }
     public double getSalario() {
         return salario;
