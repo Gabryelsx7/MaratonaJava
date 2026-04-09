@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class LeituraDoTecladoTest02 {
     static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        System.out.println("O grande Software de previsão do futuro");
+        System.out.println("Eu sou a Ia que preve do futuro");
         System.out.println("Digite sua pergunta e eu responderei sim ou não");
         String pergunta1 = input.nextLine();
         if (pergunta1.charAt(0) == ' ' ){
