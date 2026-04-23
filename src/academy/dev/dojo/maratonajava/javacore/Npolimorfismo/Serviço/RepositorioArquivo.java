@@ -2,9 +2,9 @@ package academy.dev.dojo.maratonajava.javacore.Npolimorfismo.Serviço;
 
 import academy.dev.dojo.maratonajava.javacore.Npolimorfismo.repositorio.Repositorio;
 
-public class RepositorioMemoria implements Repositorio {
+public class RepositorioArquivo implements Repositorio {
     @Override
     public void salvar() {
-        System.out.println("Salvando na Memoria");
+        System.out.println("Salvando em Arquivo");
     }
 }
