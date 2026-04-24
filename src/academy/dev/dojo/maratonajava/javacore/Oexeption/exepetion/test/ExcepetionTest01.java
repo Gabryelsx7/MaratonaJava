@@ -9,7 +9,7 @@ public class ExcepetionTest01 {
     }
 
     private static void criandoNovoArquivo() {
-        File file = new File("teste.txt");
+        File file = new File("MaratonaJava/arquivo//text.txt");
 
         try {
             boolean isCriado = file.createNewFile();
@@ -17,5 +17,6 @@ public class ExcepetionTest01 {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }
