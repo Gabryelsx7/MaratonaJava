@@ -1,0 +1,17 @@
+package academy.dev.dojo.maratonajava.javacore.QString.test;
+
+import java.util.Locale;
+
+public class StringTest02 {
+    static void main(String[] args) {
+        String nome ="Luffy";
+        String numeros="12345";
+        System.out.println(nome.charAt(0));
+        System.out.println(nome.length());
+        System.out.println(nome.replace("L","R"));
+        System.out.println(nome.toUpperCase());
+        System.out.println(nome.toLowerCase());
+        System.out.println(numeros.substring(3));
+        System.out.println(nome.trim());
+    }
+}
