@@ -4,8 +4,11 @@ public class StringTest01 {
     static void main(String[] args) {
         String nome ="Gabryel";
         String nome2 ="Gabryel";
+        String nome3 =new String("Gabryel");
         nome = nome.concat(" Chianca");
         System.out.println(nome);
         System.out.println(nome == nome2);
+        System.out.println(nome2 == nome3);
+        System.out.println(nome2 == nome3.intern());
     }
 }
