@@ -9,12 +9,11 @@ public class LocalTest02 {
         String[] isoLaguaens= Locale.getISOLanguages();
 
         for (String isoLaguagens : isoLaguaens){
-            System.out.println(isoLaguagens + " ");
+            System.out.print(isoLaguagens + " ");
         }
         System.out.println();
-
+        for (String isoContry : isoContries) {
+            System.out.println(isoContries + " ");
         }
-        for (String isoCoutry : isoContries){
-            System.out.println(isoContries+ " ");
     }
 }
