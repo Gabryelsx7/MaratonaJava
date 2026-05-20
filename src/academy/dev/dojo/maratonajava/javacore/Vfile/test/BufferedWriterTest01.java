@@ -10,8 +10,9 @@ public class BufferedWriterTest01 {
         File file = new File("file.txt");
         try (FileWriter fw = new FileWriter(file, true);
              BufferedWriter bf = new BufferedWriter(fw)){
-            fw.write("Estou aprendendo java\n continua a linha ");
-            fw.flush();
+            bf.write("Estou aprendendo java ");
+            bf.newLine();
+            bf.flush();
 
             } catch(IOException e){
                 throw new RuntimeException(e);
