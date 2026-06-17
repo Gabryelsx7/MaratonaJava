@@ -14,7 +14,7 @@ public class Filetest01 {
             System.out.println("path " +file.getPath());
             System.out.println("path Absolute " +file.getAbsolutePath());
             System.out.println("is directory " +file.isFile());
-            System.out.println("is hidden" +file.isHidden());
+            System.out.println("is hidden " +file.isHidden());
             System.out.println("last modified " + Instant.ofEpochMilli(file.lastModified()).atZone(ZoneId.systemDefault()));
         } catch (IOException e) {
             throw new RuntimeException(e);
