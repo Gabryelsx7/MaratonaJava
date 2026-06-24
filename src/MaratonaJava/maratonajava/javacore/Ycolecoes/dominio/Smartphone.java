@@ -38,4 +38,12 @@ public class Smartphone {
         Smartphone smartphone = (Smartphone) obj;
         return serialNumeber != null && serialNumeber.equals(smartphone.serialNumeber);
     }
+    //se x.equals(y) == true, y.hascode() == x.hashcode()
+    //y.hasCode() == x.hasCode não necessariamente o equals de y.equals(x) tem que ser true
+    //x.equals(y) == false
+    //y.hascode() != x.hascode x.equals(y) deverá ser falso.
+    @Override
+    public int hashCode() {
+        return serialNumeber == null ? 0: this.serialNumeber.hashCode();
+    }
 }
