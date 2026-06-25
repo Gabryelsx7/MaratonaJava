@@ -38,6 +38,15 @@ public class Smartphone {
         Smartphone smartphone = (Smartphone) obj;
         return serialNumeber != null && serialNumeber.equals(smartphone.serialNumeber);
     }
+
+    @Override
+    public String toString() {
+        return "Smartphone{" +
+                "serialNumeber='" + serialNumeber + '\'' +
+                ", marca='" + marca + '\'' +
+                '}';
+    }
+
     //se x.equals(y) == true, y.hascode() == x.hashcode()
     //y.hasCode() == x.hasCode não necessariamente o equals de y.equals(x) tem que ser true
     //x.equals(y) == false
