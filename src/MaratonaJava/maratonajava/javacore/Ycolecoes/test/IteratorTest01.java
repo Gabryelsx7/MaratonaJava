@@ -4,11 +4,12 @@ import MaratonaJava.maratonajava.javacore.Ycolecoes.dominio.Manga;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class IteratorTest01 {
     static void main(String[] args) {
-        List<Manga> mangas = new ArrayList<>();
+        List<Manga> mangas = new LinkedList<>();
         mangas.add(new Manga(5L, "Pokemon", 19.9,0));
         mangas.add(new Manga(1L, "Dragon Ball ", 9.5,5));
         mangas.add(new Manga(4L, "DR Stone", 3.2,0));
@@ -16,7 +17,7 @@ public class IteratorTest01 {
         mangas.add(new Manga(2L, "Bersek", 2.99,0));
 
         Iterator<Manga> mangaIterator = mangas.iterator();
-        while (mangaIterator.hasNext()){ //Enquanto existir
+        while (mangaIterator.hasNext()){ //Enquanto existir hasNext
             if (mangaIterator.next().getQuantidade() == 0){
                 mangaIterator.remove();
             }
