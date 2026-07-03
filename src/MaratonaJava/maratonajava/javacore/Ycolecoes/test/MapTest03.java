@@ -4,9 +4,10 @@ import MaratonaJava.maratonajava.javacore.Ycolecoes.dominio.Consumidor;
 import MaratonaJava.maratonajava.javacore.Ycolecoes.dominio.Manga;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MapTest02 {
+public class MapTest03 {
     static void main(String[] args) {
         Consumidor c1 = new Consumidor("WILLIAN");
         Consumidor c2 = new Consumidor("Gabryel");
@@ -18,14 +19,20 @@ public class MapTest02 {
         Manga manga4 = new Manga(3L, "Attack on Titan", 11.20);
         Manga manga6 = new Manga(2L, "Bersek", 2.99);
 
-        Map<Consumidor , Manga> consumidorManga = new HashMap<>();
+        List<Manga> mangaList = List.of(manga1,manga2,manga3);
+        List<Manga> mangaList2 = List.of(manga3,manga4);
+        Map<Consumidor, List<Manga>> consumidorManga = new HashMap<>();
+        consumidorManga.put(c1,mangaList);
+        consumidorManga.put(c2,mangaList2);
 
-        consumidorManga.put(c1 , manga1);
-        consumidorManga.put(c2 , manga4);
+        for (Map.Entry<Consumidor, List<Manga>> entry : consumidorManga.entrySet()){
+            System.out.println(entry.getKey().getNome());
+            for (Manga manga : entry.getValue()) {
+                System.out.println(manga.getNome());
+            }
 
-        for (Map.Entry<Consumidor , Manga> entry : consumidorManga.entrySet()){
-            System.out.println(entry.getKey().getNome()+ " - " +entry.getValue().getNome());
+        }
+
 
     }
-}
 }
