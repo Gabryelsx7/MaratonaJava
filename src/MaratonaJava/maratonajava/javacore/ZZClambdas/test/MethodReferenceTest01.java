@@ -14,7 +14,7 @@ public class MethodReferenceTest01 {
                 new Anime("Naruto", 500)));
       //  Collections.sort(animeList,(a1,a2) -> a1.getTitulo().compareTo(a2.getTitulo()));
         Collections.sort(animeList, AnimeCompartor::compareByTitulo);
-        animeList.sort(AnimeCompartor::compareByTitulo);
+        animeList.sort(AnimeCompartor::compareByTitulo);// CLASSE:: METODO
 
         System.out.println(animeList);
     }
