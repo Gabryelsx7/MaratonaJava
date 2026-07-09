@@ -16,10 +16,10 @@ public class OpitionalTest01 {
         System.out.println("------------");
 
 
-        Optional<String> nameOpition = Optional.ofNullable(findName("willian"));
+        Optional<String> nameOpition = Optional.ofNullable(String.valueOf(findName("willian")));
         String empty = nameOpition.orElse("EMPTY");
         nameOpition.ifPresent(s -> System.out.println(s.toString()));
-        String name = findName("willian");
+        String name = String.valueOf(findName("willian"));
 
     }
 
