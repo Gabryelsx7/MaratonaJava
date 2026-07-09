@@ -1,15 +1,12 @@
 package MaratonaJava.maratonajava.javacore.ZZEstreams.test;
 
-
 import MaratonaJava.maratonajava.javacore.ZZEstreams.dominio.LightNovel;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class StreamTest02 {
+public class StreamTest03 {
     private static List<LightNovel> lightNovels = new ArrayList(List.of(
             new LightNovel("Tensei Shittara", 8.99),
             new LightNovel("OverLode", 3.99),
@@ -20,13 +17,15 @@ public class StreamTest02 {
             new LightNovel("Monogatari", 4.00)));
 
     static void main(String[] args) {
-        List<String> collect = lightNovels.stream()
-                .sorted(Comparator.comparing(LightNovel::getTitle))//coloca em ordem
+        Stream<LightNovel> stream = lightNovels.stream();
+        lightNovels.stream().forEach(System.out::println);
+        long count = stream.filter(lightNovel -> lightNovel.getPrice() <= 4)
+                .count();
+       long count2 = lightNovels.stream()
+                .distinct()
                 .filter(lightNovel -> lightNovel.getPrice() <= 4)
-                .limit(3) //Maximo 3 titulos
-                .map(LightNovel::getTitle)
-                .collect(Collectors.toList());
-
-        System.out.println(collect);
+               .count();
+        System.out.println(count);
+        System.out.println(count2);
     }
 }
