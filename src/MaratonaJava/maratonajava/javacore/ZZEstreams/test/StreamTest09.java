@@ -25,7 +25,7 @@ public class StreamTest09 {
 
         System.out.println();
 
-        int num [] = {1,2,3,4,5};
+        int[] num = {1,2,3,4,5};
         Arrays.stream(num)
                 .average()
                 .ifPresent(System.out::println);
