@@ -34,7 +34,7 @@ public class StreamTest06 {
 
         lightNovels.stream()
                 .filter(lightNovel -> lightNovel.getPrice() >= 3)
-                .sorted(Comparator.comparing(LightNovel::getPrice).reversed())
+                .sorted()
                 .findFirst()
                 .ifPresent(System.out::println);
 
