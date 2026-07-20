@@ -1,8 +1,8 @@
 package MaratonaJava.maratonajava.javacore.Kenum.dominio;
 
 public enum TipoCliente {
-    PESSOA_JURIDICA(1, "Pessoa Jurídica"),
-    PESSOA_FISICA(2, "Pessoa Física");
+    PESSOA_JURIDICA(1, "Person Jurídica"),
+    PESSOA_FISICA(2, "Person Física");
 
     public final int valor;
     private final String nomeRelatorio;
