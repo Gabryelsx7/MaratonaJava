@@ -11,7 +11,10 @@ import java.util.List;
 public class ConnectionFactoryTest01 {
     public static void main(String[] args) throws SQLException, IllegalAccessException {
       //  Producer producer = Producer.builder().name("Studio Deen").build();
-        List<Producer> producers = ProduceService.findAll();
-        log.info("Producers found: '{}'", producers);
+        //List<Producer> producers = ProduceService.findAll();
+        //log.info("Producers found: '{}'", producers);
+
+        List<Producer> findbyname = ProduceService.findByAll("Mad");
+        log.info("Producers found: '{}'", findbyname);
     }
 }

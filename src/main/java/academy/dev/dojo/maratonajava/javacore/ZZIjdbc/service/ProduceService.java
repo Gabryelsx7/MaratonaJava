@@ -30,4 +30,8 @@ public class ProduceService {
         return ProducerRepository.findAll();
 
     }
+    public static List<Producer> findByAll(String name)  {
+        return ProducerRepository.findByName(name);
+
+    }
 }
