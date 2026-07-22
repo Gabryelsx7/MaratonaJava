@@ -7,8 +7,7 @@ import java.sql.SQLException;
 
 public class ConnectionFactoryTest01 {
     public static void main(String[] args) throws SQLException {
-        Producer producer = Producer.ProducerBuilder.builder()
-                .name("NHK").build();
+        Producer producer = Producer.builder().name("Studio Deen").build();
         ProducerRepository.save(producer);
     }
 }
