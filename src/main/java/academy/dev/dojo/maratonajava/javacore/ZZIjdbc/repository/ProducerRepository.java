@@ -17,10 +17,28 @@ public class ProducerRepository {
         try (Connection conn = ConnectionFactory.getConnection();
              Statement stmt = conn.createStatement()) {
             int rowsAffected = stmt.executeUpdate(sql);
-            log.info("Insrt producer in the database, rows affectd {}," +rowsAffected);
+            log.info("Insrt producer '{}' in the database, rows affectd '{}',",producer.getName(), rowsAffected);
 
             System.out.println(rowsAffected);
         } catch (SQLDataException e) {
+            log.error("Error while tryng to insert producer'{}'",producer.getName(), e);
+            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void delete(int id ) {
+        String sql = "DELETE FROM anime_store.producer WHERE Id=%s;".formatted(id);
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement()) {
+            int rowsAffected = stmt.executeUpdate(sql);
+            log.info("Delete producer '{}' from database, rows affectd '{}',",id, rowsAffected);
+
+            System.out.println(rowsAffected);
+        } catch (SQLDataException e) {
+            log.error("Error while tryng to insert producer'{}'",id, e);
             e.printStackTrace();
         } catch (SQLException e) {
             throw new RuntimeException(e);
