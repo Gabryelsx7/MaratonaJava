@@ -7,7 +7,8 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="academy.devdojo" level="info" additivity="false">
+        <!-- Corrigido de academy.devdojo para academy.dev.dojo -->
+        <Logger name="academy.dev.dojo" level="info" additivity="false">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
 
