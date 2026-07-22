@@ -17,7 +17,7 @@ public class ProduceService {
 
     public static void update(Producer producer) throws IllegalAccessException {
         requereValidId(producer.getId());
-        ProducerRepository.upadate(producer);
+        ProducerRepository.update(producer);
     }
 
     private static void requereValidId(Integer id) throws IllegalAccessException {
@@ -32,6 +32,11 @@ public class ProduceService {
     }
     public static List<Producer> findByAll(String name)  {
         return ProducerRepository.findByName(name);
-
+    }
+    public static void  showProductMetadata()  {
+         ProducerRepository.showProductMetadata();
+    }
+    public static void  showTypeScroll()  {
+        ProducerRepository.showTypeScroll();
     }
 }

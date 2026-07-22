@@ -10,54 +10,45 @@ import java.util.List;
 
 @Log4j2
 public class ProducerRepository {
+
     public static void save(Producer producer) {
-        String sql = "INSERT INTO anime_store.producer (name) " + "VALUES ('%s');".formatted(producer.getName());
+        String sql = "INSERT INTO anime_store.producer (name) VALUES ('%s');".formatted(producer.getName());
 
         try (Connection conn = ConnectionFactory.getConnection();
              Statement stmt = conn.createStatement()) {
-            int rowsAffected = stmt.executeUpdate(sql);
-            log.info("Insrt producer '{}' in the database, rows affectd '{}',", producer.getName(), rowsAffected);
 
-            System.out.println(rowsAffected);
-        } catch (SQLDataException e) {
-            log.error("Error while tryng to insert producer'{}'", producer.getName(), e);
-            e.printStackTrace();
+            int rowsAffected = stmt.executeUpdate(sql);
+            log.info("Inserted producer '{}' in the database, rows affected '{}'", producer.getName(), rowsAffected);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error("Error while trying to insert producer '{}'", producer.getName(), e);
         }
     }
 
     public static void delete(int id) {
-        String sql = "DELETE FROM anime_store.producer WHERE Id=%s;".formatted(id);
+        // Corrigido para %d (número inteiro)
+        String sql = "DELETE FROM anime_store.producer WHERE Id=%d;".formatted(id);
 
         try (Connection conn = ConnectionFactory.getConnection();
              Statement stmt = conn.createStatement()) {
-            int rowsAffected = stmt.executeUpdate(sql);
-            log.info("Delete producer '{}' from database, rows affectd '{}',", id, rowsAffected);
 
-            System.out.println(rowsAffected);
-        } catch (SQLDataException e) {
-            log.error("Error while tryng to delete producer'{}'", id, e);
-            e.printStackTrace();
+            int rowsAffected = stmt.executeUpdate(sql);
+            log.info("Deleted producer '{}' from database, rows affected '{}'", id, rowsAffected);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error("Error while trying to delete producer '{}'", id, e);
         }
     }
 
-    public static void upadate(Producer producer) {
-        String sql = "UPDATE anime_store.producer SET name='%s' WHERE Id='%d';".formatted(producer.getName(), producer.getId());
+    public static void update(Producer producer) {
+        // Removida as aspas do %d e corrigido nome do método para 'update'
+        String sql = "UPDATE anime_store.producer SET name='%s' WHERE Id=%d;".formatted(producer.getName(), producer.getId());
 
         try (Connection conn = ConnectionFactory.getConnection();
              Statement stmt = conn.createStatement()) {
-            int rowsAffected = stmt.executeUpdate(sql);
-            log.info("Updated producer '{}' rows affectd '{}',", producer.getId(), rowsAffected);
 
-            System.out.println(rowsAffected);
-        } catch (SQLDataException e) {
-            log.error("Error while tryng to update producer'{}'", producer.getId(), e);
-            e.printStackTrace();
+            int rowsAffected = stmt.executeUpdate(sql);
+            log.info("Updated producer '{}', rows affected '{}'", producer.getId(), rowsAffected);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error("Error while trying to update producer '{}'", producer.getId(), e);
         }
     }
 
@@ -82,11 +73,11 @@ public class ProducerRepository {
         }
         return producers;
     }
+
     public static List<Producer> findByName(String name) {
-        log.info("Finding produce by name");
+        log.info("Finding producer by name '{}'", name);
         List<Producer> producers = new ArrayList<>();
-        String sql = "SELECT * FROM anime_store.producer where name like '%%%s%%';"
-                .formatted(name);
+        String sql = "SELECT id, name FROM anime_store.producer WHERE name LIKE '%%%s%%';".formatted(name);
 
         try (Connection conn = ConnectionFactory.getConnection();
              Statement stmt = conn.createStatement();
@@ -100,8 +91,91 @@ public class ProducerRepository {
                 producers.add(producer);
             }
         } catch (SQLException e) {
-            log.error("Error while trying to find all producers", e);
+            log.error("Error while trying to find producers by name '{}'", name, e);
         }
         return producers;
+    }
+
+    public static void showProductMetadata() {
+        log.info("Showing Producer Metadata");
+        String sql = "SELECT * FROM anime_store.producer;";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            ResultSetMetaData rsMetadata = rs.getMetaData();
+            int columnCount = rsMetadata.getColumnCount();
+            log.info("Columns count '{}'", columnCount);
+
+            // Índices do JDBC começam em 1 e vão até <= columnCount
+            for (int i = 1; i <= columnCount; i++) {
+                log.info("Table name '{}'", rsMetadata.getTableName(i));
+                log.info("Column name '{}'", rsMetadata.getColumnName(i));
+                log.info("Column size '{}'", rsMetadata.getColumnDisplaySize(i));
+                log.info("Column type '{}'", rsMetadata.getColumnTypeName(i));
+            }
+        } catch (SQLException e) {
+            log.error("Error while showing producer metadata", e);
+        }
+    }
+
+    public static void showDriverMetadata() {
+        log.info("Showing Producer Metadata");
+        String sql = "SELECT * FROM anime_store.producer;";
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            DatabaseMetaData metaData = conn.getMetaData();
+            if (metaData.supportsResultSetType(ResultSet.TYPE_FORWARD_ONLY)) {
+                log.info("Supports TYPE_FORWARD_ONLY");
+                if (metaData.supportsResultSetConcurrency(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
+                    log.info("Supports TYPE_FORWARD_ONLY");
+                }
+            }
+            if (metaData.supportsResultSetType(ResultSet.TYPE_SCROLL_INSENSITIVE)) {
+                log.info("Supports TYPE_SCROLL_INSENSITIVE");
+                if (metaData.supportsResultSetConcurrency(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+                    log.info("Supports TYPE_SCROLL_INSENSITIVE");
+                }
+            }
+            if (metaData.supportsResultSetType(ResultSet.TYPE_SCROLL_SENSITIVE)) {
+                log.info("Supports TYPE_FORWARD_ONLY");
+                if (metaData.supportsResultSetConcurrency(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+                    log.info("Supports TYPE_FORWARD_ONLY");
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Error while showing producer metadata", e);
+        }
+    }
+
+    public static void showTypeScroll() {
+        // Usamos o parâmetro 'name' para filtrar com LIKE (se desejar) ou a query completa:
+        String sql = "SELECT id, name FROM anime_store.producer;";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            log.info("Moved to last row? '{}'", rs.last());
+            log.info("Row number: '{}'", rs.getRow());
+
+            // Imprime o objeto da última linha
+            log.info(Producer.builder()
+                    .id(rs.getInt("id"))
+                    .name(rs.getString("name"))
+                    .build());
+
+            // Exemplo: voltando para a primeira linha
+            log.info("Is first row? '{}'", rs.first());
+            log.info("Row number: '{}'", rs.getRow());
+            log.info(Producer.builder()
+                    .id(rs.getInt("id"))
+                    .name(rs.getString("name"))
+                    .build());
+
+        } catch (SQLException e) {
+            log.error("Error while trying to show type scroll", e);
+        }
     }
 }
