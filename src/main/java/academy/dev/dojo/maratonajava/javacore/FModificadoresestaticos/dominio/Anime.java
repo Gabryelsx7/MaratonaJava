@@ -1,0 +1,33 @@
+package academy.dev.dojo.maratonajava.javacore.FModificadoresestaticos.dominio;
+
+public class Anime {
+    private String nome;
+    private static final int[] episodios;
+
+    static {
+        System.out.println("Dentro do bloco de inicialização");
+        episodios = new int[100];
+        for (int i = 0; i < episodios.length; i++) {
+            episodios[i] = i + 1;
+        }
+    }
+
+    public Anime(String nome) {
+        this.nome = nome;
+    }
+
+    public Anime() {
+        for (int espisodio : episodios) {
+            System.out.print(espisodio + " ");
+        }
+        System.out.println();
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int[] getEpisodios() {
+        return episodios;
+    }
+}
