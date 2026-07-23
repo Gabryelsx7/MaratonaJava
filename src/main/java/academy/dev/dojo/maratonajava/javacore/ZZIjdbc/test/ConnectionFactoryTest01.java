@@ -19,9 +19,9 @@ public class ConnectionFactoryTest01 {
 
         //ProduceService.showProductMetadata();
         //ProduceService.showTypeScroll();
-        List<Producer> deen = ProduceService.findByNameAndUpdateToUpperCase("Deen");
-        log.info("Producers found: '{}'", deen);
-
+        //List<Producer> producers = ProduceService.findByNameAndInsertWhenNotFound("A-1 Pictures");
+       // log.info("Producers found: '{}'", producers);
+        ProduceService.findByNameDelete("A-1 pictures");
 
 
     }
