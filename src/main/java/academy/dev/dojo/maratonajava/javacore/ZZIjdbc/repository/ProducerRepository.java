@@ -25,7 +25,6 @@ public class ProducerRepository {
     }
 
     public static void delete(int id) {
-        // Corrigido para %d (número inteiro)
         String sql = "DELETE FROM anime_store.producer WHERE Id=%d;".formatted(id);
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -39,7 +38,6 @@ public class ProducerRepository {
     }
 
     public static void update(Producer producer) {
-        // Removida as aspas do %d e corrigido nome do método para 'update'
         String sql = "UPDATE anime_store.producer SET name='%s' WHERE Id=%d;".formatted(producer.getName(), producer.getId());
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -108,7 +106,6 @@ public class ProducerRepository {
             int columnCount = rsMetadata.getColumnCount();
             log.info("Columns count '{}'", columnCount);
 
-            // Índices do JDBC começam em 1 e vão até <= columnCount
             for (int i = 1; i <= columnCount; i++) {
                 log.info("Table name '{}'", rsMetadata.getTableName(i));
                 log.info("Column name '{}'", rsMetadata.getColumnName(i));
@@ -121,36 +118,37 @@ public class ProducerRepository {
     }
 
     public static void showDriverMetadata() {
-        log.info("Showing Producer Metadata");
-        String sql = "SELECT * FROM anime_store.producer;";
+        log.info("Showing Driver Metadata");
 
         try (Connection conn = ConnectionFactory.getConnection()) {
             DatabaseMetaData metaData = conn.getMetaData();
+
             if (metaData.supportsResultSetType(ResultSet.TYPE_FORWARD_ONLY)) {
                 log.info("Supports TYPE_FORWARD_ONLY");
                 if (metaData.supportsResultSetConcurrency(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
-                    log.info("Supports TYPE_FORWARD_ONLY");
+                    log.info("And supports CONCUR_UPDATABLE");
                 }
             }
+
             if (metaData.supportsResultSetType(ResultSet.TYPE_SCROLL_INSENSITIVE)) {
                 log.info("Supports TYPE_SCROLL_INSENSITIVE");
                 if (metaData.supportsResultSetConcurrency(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
-                    log.info("Supports TYPE_SCROLL_INSENSITIVE");
+                    log.info("And supports CONCUR_UPDATABLE");
                 }
             }
+
             if (metaData.supportsResultSetType(ResultSet.TYPE_SCROLL_SENSITIVE)) {
-                log.info("Supports TYPE_FORWARD_ONLY");
+                log.info("Supports TYPE_SCROLL_SENSITIVE");
                 if (metaData.supportsResultSetConcurrency(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
-                    log.info("Supports TYPE_FORWARD_ONLY");
+                    log.info("And supports CONCUR_UPDATABLE");
                 }
             }
         } catch (SQLException e) {
-            log.error("Error while showing producer metadata", e);
+            log.error("Error while showing driver metadata", e);
         }
     }
 
     public static void showTypeScroll() {
-        // Usamos o parâmetro 'name' para filtrar com LIKE (se desejar) ou a query completa:
         String sql = "SELECT id, name FROM anime_store.producer;";
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -160,13 +158,11 @@ public class ProducerRepository {
             log.info("Moved to last row? '{}'", rs.last());
             log.info("Row number: '{}'", rs.getRow());
 
-            // Imprime o objeto da última linha
             log.info(Producer.builder()
                     .id(rs.getInt("id"))
                     .name(rs.getString("name"))
                     .build());
 
-            // Exemplo: voltando para a primeira linha
             log.info("Is first row? '{}'", rs.first());
             log.info("Row number: '{}'", rs.getRow());
             log.info(Producer.builder()
@@ -177,5 +173,35 @@ public class ProducerRepository {
         } catch (SQLException e) {
             log.error("Error while trying to show type scroll", e);
         }
+    }
+
+    public static List<Producer> findByNameAndUpdateToUpperCase(String name) {
+        log.info("Finding producer by name '{}'", name);
+        List<Producer> producers = new ArrayList<>();
+        String sql = "SELECT id, name FROM anime_store.producer WHERE name LIKE '%%%s%%';".formatted(name);
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // Converte o nome para letras maiúsculas
+                String upperName = rs.getString("name").toUpperCase();
+
+                // Atualiza no ResultSet e manda a alteração pro banco
+                rs.updateString("name", upperName);
+                rs.updateRow();
+
+                Producer producer = Producer.builder()
+                        .id(rs.getInt("id"))
+                        .name(upperName)
+                        .build();
+
+                producers.add(producer);
+            }
+        } catch (SQLException e) {
+            log.error("Error while trying to find producers by name '{}'", name, e);
+        }
+        return producers;
     }
 }

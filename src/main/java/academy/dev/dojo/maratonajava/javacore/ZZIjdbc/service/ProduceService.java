@@ -30,13 +30,25 @@ public class ProduceService {
         return ProducerRepository.findAll();
 
     }
+
     public static List<Producer> findByAll(String name)  {
         return ProducerRepository.findByName(name);
     }
+
     public static void  showProductMetadata()  {
          ProducerRepository.showProductMetadata();
     }
+
     public static void  showTypeScroll()  {
         ProducerRepository.showTypeScroll();
     }
+
+    public static List<Producer> findByName(String name)  {
+        return ProducerRepository.findByName(name);
+    }
+
+    public static List<Producer> findByNameAndUpdateToUpperCase(String name)  {
+        return ProducerRepository.findByNameAndUpdateToUpperCase(name);
+    }
+
 }
