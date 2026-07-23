@@ -59,4 +59,8 @@ public class ProduceService {
          ProducerRepository.findByNameDelete(name);
     }
 
+    public static List<Producer> findByNamePrepadStatement(String name)  {
+        return ProducerRepository.findByNamePrepadStatement(name);
+    }
+
 }

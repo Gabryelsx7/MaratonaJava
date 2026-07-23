@@ -204,6 +204,7 @@ public class ProducerRepository {
         }
         return producers;
     }
+
     public static List<Producer> findByNameAndInsertWhenNotFound(String name) {
         log.info("Finding producer by name '{}'", name);
         List<Producer> producers = new ArrayList<>();
@@ -214,9 +215,9 @@ public class ProducerRepository {
              Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
              ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) return producers;
-                rs.moveToInsertRow();
-                rs.updateString("name",name);
-                rs.insertRow();
+            rs.moveToInsertRow();
+            rs.updateString("name", name);
+            rs.insertRow();
             producers.add(getProducer(rs));
 
         } catch (SQLException e) {
@@ -233,6 +234,7 @@ public class ProducerRepository {
                 .name(rs.getString("name"))
                 .build();
     }
+
     public static void findByNameDelete(String name) {
         log.info("Finding producer by name '{}'", name);
         List<Producer> producers = new ArrayList<>();
@@ -242,8 +244,8 @@ public class ProducerRepository {
         try (Connection conn = ConnectionFactory.getConnection();
              Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
              ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()){
-                log.info("Deleting '{}'",rs.getString("name"));
+            while (rs.next()) {
+                log.info("Deleting '{}'", rs.getString("name"));
                 rs.deleteRow();
             }
 
@@ -251,4 +253,35 @@ public class ProducerRepository {
             log.error("Error while trying to find producers by name '{}'", name, e);
         }
     }
+
+    public static List<Producer> findByNamePrepadStatement(String name) {
+        log.info("Finding producer by name '{}'", name);
+        List<Producer> producers = new ArrayList<>();
+        String sql = "SELECT id, name FROM anime_store.producer WHERE name LIKE ?;";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = creatPreparedStatemetent(conn, sql, name);
+             ResultSet rs = ps.executeQuery();) {
+
+            while (rs.next()) {
+                Producer producer = Producer.builder()
+                        .id(rs.getInt("id"))
+                        .name(rs.getString("name"))
+                        .build();
+                producers.add(producer);
+            }
+
+        } catch (SQLException e) {
+            log.error("Error while trying to find producers by name '{}'", name, e);
+        }
+        return producers;
+    }
+
+    private static PreparedStatement creatPreparedStatemetent(Connection conn, String sql, String name) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, name);
+        //    ps.setString(1,"%"+name+"%"); como usar um like
+        return ps;
+    }
+
 }
