@@ -335,7 +335,6 @@ public class ProducerRepository {
         return producers;
     }
 
-
     public static void saveTranscation(List<Producer> producers) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             // 1. Desativa o commit automático (Início da Transação)
