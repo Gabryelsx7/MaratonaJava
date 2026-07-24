@@ -2,6 +2,7 @@ package academy.dev.dojo.maratonajava.javacore.ZZIjdbc.repository;
 
 import academy.dev.dojo.maratonajava.javacore.ZZIjdbc.conn.ConnectionFactory;
 import academy.dev.dojo.maratonajava.javacore.ZZIjdbc.dominio.Producer;
+import academy.dev.dojo.maratonajava.javacore.ZZIjdbc.listener.CustomRowSetListener;
 import lombok.extern.log4j.Log4j2;
 
 import javax.sql.rowset.JdbcRowSet;
@@ -15,6 +16,7 @@ public class ProducerRepositoryRowSet {
         String sql = "Select * from anime_store.producer where name like ?;";
         List<Producer> producers = new ArrayList<>();
         try (JdbcRowSet jrs = ConnectionFactory.getjdbcRowSet()) {
+            jrs.addRowSetListener(new CustomRowSetListener());
             jrs.setCommand(sql);
             jrs.setString(1, String.format("%%%s%%", name));
             jrs.execute();
@@ -32,4 +34,33 @@ public class ProducerRepositoryRowSet {
         }
         return producers;
     }
+
+    //public static void updateNameJdbcRowSet(Producer producer) {
+    //    String sql = "UPDATE anime_store.producer SET name='?' WHERE Id=?;";
+    //    try (JdbcRowSet jrs = ConnectionFactory.getjdbcRowSet()) {
+    //        jrs.setCommand(sql);
+    //        jrs.setString(1, producer.getName());
+    //        jrs.setInt(2, producer.getId());
+    //        jrs.execute();
+
+    //    } catch (SQLException e) {
+    //        e.printStackTrace();
+    //    }
+    //}
+    public static void updateNameJdbcRowSet(Producer producer) {
+        String sql = "Select * from anime_store.producer  WHERE Id=?;";
+        try (JdbcRowSet jrs = ConnectionFactory.getjdbcRowSet()) {
+            jrs.addRowSetListener(new CustomRowSetListener());
+            jrs.setCommand(sql);
+            jrs.setInt(1, producer.getId());
+            jrs.execute();
+            if (!jrs.next()) return;
+            jrs.updateString("name", producer.getName());
+            jrs.updateRow();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
