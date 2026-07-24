@@ -29,4 +29,7 @@ public class ConnectionFactory {
 
         return jdbcRowSet;
     }
+    public static CachedRowSet getCachedRowSet() throws SQLException {
+        return RowSetProvider.newFactory().createCachedRowSet();
+    }
 }
