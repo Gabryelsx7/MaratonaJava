@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.JdbcRowSet;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,5 +84,6 @@ public class ProducerRepositoryRowSet {
             e.printStackTrace();
         }
     }
+
 
 }

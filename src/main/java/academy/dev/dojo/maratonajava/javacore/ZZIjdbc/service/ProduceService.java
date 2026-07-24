@@ -2,6 +2,7 @@ package academy.dev.dojo.maratonajava.javacore.ZZIjdbc.service;
 
 import academy.dev.dojo.maratonajava.javacore.ZZIjdbc.dominio.Producer;
 import academy.dev.dojo.maratonajava.javacore.ZZIjdbc.repository.ProducerRepository;
+import academy.dev.dojo.maratonajava.javacore.ZZIjdbc.repository.ProducerRepositoryRowSet;
 
 import java.util.List;
 
@@ -31,45 +32,49 @@ public class ProduceService {
         }
     }
 
-    public static List<Producer> findAll()  {
+    public static List<Producer> findAll() {
         return ProducerRepository.findAll();
 
     }
 
-    public static List<Producer> findByAll(String name)  {
+    public static List<Producer> findByAll(String name) {
         return ProducerRepository.findByName(name);
     }
 
-    public static void  showProductMetadata()  {
-         ProducerRepository.showProductMetadata();
+    public static void showProductMetadata() {
+        ProducerRepository.showProductMetadata();
     }
 
-    public static void  showTypeScroll()  {
+    public static void showTypeScroll() {
         ProducerRepository.showTypeScroll();
     }
 
-    public static List<Producer> findByName(String name)  {
+    public static List<Producer> findByName(String name) {
         return ProducerRepository.findByName(name);
     }
 
-    public static List<Producer> findByNameAndUpdateToUpperCase(String name)  {
+    public static List<Producer> findByNameAndUpdateToUpperCase(String name) {
         return ProducerRepository.findByNameAndUpdateToUpperCase(name);
     }
 
-    public static List<Producer> findByNameAndInsertWhenNotFound(String name)  {
+    public static List<Producer> findByNameAndInsertWhenNotFound(String name) {
         return ProducerRepository.findByNameAndInsertWhenNotFound(name);
     }
 
-    public static void findByNameDelete(String name)  {
-         ProducerRepository.findByNameDelete(name);
+    public static void findByNameDelete(String name) {
+        ProducerRepository.findByNameDelete(name);
     }
 
-    public static List<Producer> findByNamePrepadStatement(String name)  {
+    public static List<Producer> findByNamePrepadStatement(String name) {
         return ProducerRepository.findByNamePrepadStatement(name);
     }
 
-    public static List<Producer> findByNamecallableStatement(String name)  {
+    public static List<Producer> findByNamecallableStatement(String name) {
         return ProducerRepository.findByNamecallableStatement(name);
+    }
+
+    public static void saveTranscation(List<Producer> producers) {
+        ProducerRepository.saveTranscation(producers);
     }
 
 }

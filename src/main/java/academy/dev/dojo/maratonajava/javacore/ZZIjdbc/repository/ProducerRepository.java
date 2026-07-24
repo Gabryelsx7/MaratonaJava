@@ -309,7 +309,7 @@ public class ProducerRepository {
     private static CallableStatement callableStatementFindByName(Connection conn, String name) throws SQLException {
         String sql = "CALL anime_store.sp_get_name_by_name(?);";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setString(1,String.format("%%s%%",name));
+        cs.setString(1, String.format("%%s%%", name));
         return cs;
     }
 
@@ -336,5 +336,40 @@ public class ProducerRepository {
     }
 
 
+    public static void saveTranscation(List<Producer> producers) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            // 1. Desativa o commit automático (Início da Transação)
+            conn.setAutoCommit(false);
+
+            // 2. Tenta executar as inserções
+            preparedsaveTransaction(conn, producers);
+
+            // 3. Se tudo deu certo, efetiva as alterações no banco
+            conn.commit();
+            log.info("Transação concluída com sucesso para {} produtoras.", producers.size());
+
+        } catch (SQLException e) {
+            log.error("Erro durante a transação. Executando Rollback...", e);
+            // Opcional, mas boa prática: garantir o rollback manual caso a conexão ainda esteja aberta
+        }
+    }
+
+    private static void preparedsaveTransaction(Connection conn, List<Producer> producers) throws SQLException {
+        String sql = "INSERT INTO anime_store.producer (name) VALUES (?);";
+
+        try {
+            for (Producer p : producers) {
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    log.info("Salvando producer '{}'", p.getName());
+                    ps.setString(1, p.getName());
+                    ps.execute();
+                }
+            }
+        } catch (SQLException e) {
+            // Se der qualquer erro no meio do loop, cancela TUDO o que foi feito na transação!
+            conn.rollback();
+            throw e; // Relança para o método principal saber que deu erro
+        }
+    }
 
 }
