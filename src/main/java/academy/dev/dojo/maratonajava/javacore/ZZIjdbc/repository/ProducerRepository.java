@@ -257,10 +257,9 @@ public class ProducerRepository {
     public static List<Producer> findByNamePrepadStatement(String name) {
         log.info("Finding producer by name '{}'", name);
         List<Producer> producers = new ArrayList<>();
-        String sql = "SELECT id, name FROM anime_store.producer WHERE name LIKE ?;";
 
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = creatPreparedStatemetent(conn, sql, name);
+             PreparedStatement ps = preparedStatementFindByName(conn, name);
              ResultSet rs = ps.executeQuery();) {
 
             while (rs.next()) {
@@ -277,11 +276,63 @@ public class ProducerRepository {
         return producers;
     }
 
-    private static PreparedStatement creatPreparedStatemetent(Connection conn, String sql, String name) throws SQLException {
+    private static PreparedStatement preparedStatementFindByName(Connection conn, String name) throws SQLException {
+        String sql = "SELECT id, name FROM anime_store.producer WHERE name LIKE ?;";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, name);
-        //    ps.setString(1,"%"+name+"%"); como usar um like
+        // ps.setString(1,String.format("%%s%%",name)); como usar um like
         return ps;
+    }
+
+    public static void updatePreparedStatemente(Producer producer) {
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = preparedUpdate(conn, producer)) {
+            int rowsAffected = ps.executeUpdate();
+
+
+            log.info("Updated producer '{}', rows affected '{}'", producer.getId(), rowsAffected);
+        } catch (SQLException e) {
+            log.error("Error while trying to update producer '{}'", producer.getId(), e);
+        }
+    }
+
+    private static PreparedStatement preparedUpdate(Connection conn, Producer producer) throws SQLException {
+        String sql = "UPDATE anime_store.producer SET name='?' WHERE Id=?;";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, producer.getName());
+        ps.setInt(2, producer.getId());
+        // ps.setString(1,String.format("%%s%%",name)); como usar um like
+        return ps;
+    }
+
+    private static CallableStatement callableStatementFindByName(Connection conn, String name) throws SQLException {
+        String sql = "CALL anime_store.sp_get_name_by_name(?);";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setString(1,String.format("%%s%%",name));
+        return cs;
+    }
+
+    public static List<Producer> findByNamecallableStatement(String name) {
+        log.info("Finding producer by name '{}'", name);
+        List<Producer> producers = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = callableStatementFindByName(conn, name);
+             ResultSet rs = ps.executeQuery();) {
+
+            while (rs.next()) {
+                Producer producer = Producer.builder()
+                        .id(rs.getInt("id"))
+                        .name(rs.getString("name"))
+                        .build();
+                producers.add(producer);
+            }
+
+        } catch (SQLException e) {
+            log.error("Error while trying to find producers by name '{}'", name, e);
+        }
+        return producers;
     }
 
 }

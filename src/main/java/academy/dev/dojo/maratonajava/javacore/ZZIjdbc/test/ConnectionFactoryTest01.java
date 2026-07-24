@@ -23,7 +23,13 @@ public class ConnectionFactoryTest01 {
        // log.info("Producers found: '{}'", producers);
        // ProduceService.findByNameDelete("A-1 pictures");
 
-        List<Producer> producers = ProduceService.findByNamePrepadStatement("B");
+      //List<Producer> producers = ProduceService.findByNamePrepadStatement("B");
+      //log.info("Producers found '{}'", producers);
+
+      //Producer producerUpdatae = Producer.builder().id(1).name("MADHOUSE").build();
+      //ProduceService.update(producerUpdatae);
+
+        List<Producer> producers = ProduceService.findByNamecallableStatement("B");
         log.info("Producers found '{}'", producers);
 
 

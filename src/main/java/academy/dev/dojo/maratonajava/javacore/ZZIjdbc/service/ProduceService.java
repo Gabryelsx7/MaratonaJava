@@ -20,6 +20,11 @@ public class ProduceService {
         ProducerRepository.update(producer);
     }
 
+    public static void updatePreparedStatemente(Producer producer) throws IllegalAccessException {
+        requereValidId(producer.getId());
+        ProducerRepository.updatePreparedStatemente(producer);
+    }
+
     private static void requereValidId(Integer id) throws IllegalAccessException {
         if (id == null || id <= 0) {
             throw new IllegalAccessException("Invalid value for id");
@@ -61,6 +66,10 @@ public class ProduceService {
 
     public static List<Producer> findByNamePrepadStatement(String name)  {
         return ProducerRepository.findByNamePrepadStatement(name);
+    }
+
+    public static List<Producer> findByNamecallableStatement(String name)  {
+        return ProducerRepository.findByNamecallableStatement(name);
     }
 
 }
