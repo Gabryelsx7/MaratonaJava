@@ -2,19 +2,53 @@ package service;
 
 import academy.dev.dojo.maratonajava.javacore.ZZKjunit.dominio.Person;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonServiceTest {
+    private Person adult;
+    private Person notadult;
+    private PersonService personService;
+
+    @BeforeEach
+    public void setUp() {
+        adult = new Person(18);
+        notadult = new Person(15);
+        personService = new PersonService();
+
+    }
 
     @Test
     @DisplayName("A person should be not adult when age is lower than 18")
     void isAdult_ReturnFalse_WhenAgeLowerThan18() {
-        Person person = new Person(15);
-        PersonService personService = new PersonService();
-        Assertions.assertEquals(false, personService.isAdult(person));
-        assertFalse(personService.isAdult(person));
+        assertFalse(personService.isAdult(notadult));
+        //Assertions.assertEquals(false, personService.isAdult(person));
+    }
+
+    @Test
+    @DisplayName("A person should be adult when age is greater or equal than 18")
+    void isAdult_ReturnTrue_WhenAgeGreaterEqualsThan18() {
+        assertTrue(personService.isAdult(adult));
+        // Assertions.assertEquals(true, personService.isAdult(person));
+    }
+    @Test
+    @DisplayName("Should throw nullPoint with message when person is null")
+    void isAdult_ThorowException_WhenPersonIsNull() {
+       // assertNull(personService.isAdult(adult));
+        Assertions.assertThrows(NullPointerException.class, () -> personService.isAdult(null),"Person can't be null");
+    }
+    @Test
+    @DisplayName("Should return list with only adults")
+    void filterRemovingNotAdult_ReturnListWhithAdultOnly_WhenListOfPersonWithAdultIsPassed() {
+        Person person1 = new Person(17);
+        Person person2 = new Person(18);
+        Person person3 = new Person(21);
+        List<Person> personList = List.of(person1, person2, person3);
+        Assertions.assertEquals(2,personService.filterRemovingNotAdult(personList));
     }
 }
