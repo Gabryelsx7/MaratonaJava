@@ -4,9 +4,13 @@ import academy.dev.dojo.maratonajava.javacore.ZZJcrud.conn.ConnectionFactory;
 import academy.dev.dojo.maratonajava.javacore.ZZJcrud.dominio.Producer;
 import lombok.extern.log4j.Log4j2;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 public class ProducerRepository {
@@ -36,7 +40,6 @@ public class ProducerRepository {
     private static PreparedStatement createPreparedStatementFindByName(Connection conn, String name) throws SQLException {
         String sql = "SELECT id, name FROM anime_store.producer WHERE name LIKE ?;";
         PreparedStatement ps = conn.prepareStatement(sql);
-        // Garante a busca por partes do nome (ex: %Studio%)
         ps.setString(1, String.format("%%%s%%", name));
         return ps;
     }
@@ -45,7 +48,7 @@ public class ProducerRepository {
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = createPreparedStatementDelete(conn, id)) {
 
-            ps.execute(); // Executa o PreparedStatement já preparado!
+            ps.execute();
             log.info("Deleted producer with id '{}' from database", id);
         } catch (SQLException e) {
             log.error("Error while trying to delete producer with id '{}'", id, e);
@@ -53,7 +56,6 @@ public class ProducerRepository {
     }
 
     private static PreparedStatement createPreparedStatementDelete(Connection conn, Integer id) throws SQLException {
-        // SQL correto para o Delete
         String sql = "DELETE FROM anime_store.producer WHERE id = ?;";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, id);
@@ -61,20 +63,69 @@ public class ProducerRepository {
     }
 
     public static void save(Producer producer) {
-        log.info("Finding producer by name '{}'", producer);
+        log.info("Saving producer '{}'", producer.getName());
 
-        try (Connection conn =ConnectionFactory.getConnection();
+        try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = createPrepareStatementSave(conn, producer)) {
             ps.execute();
+            log.info("Successfully saved producer '{}'", producer.getName());
         } catch (SQLException e) {
-            log.error("Error while trying to update producer '{}'", producer.getId(), e);
+            log.error("Error while trying to save producer '{}'", producer.getName(), e);
         }
     }
+
     private static PreparedStatement createPrepareStatementSave(Connection conn, Producer producer) throws SQLException {
         String sql = "INSERT INTO anime_store.producer (name) VALUES (?);";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, producer.getName());
-        // ps.setString(1,String.format("%%s%%",name)); como usar um like
+        return ps;
+    }
+
+    public static Optional<Producer> findByID(Integer id) {
+        log.info("Finding producer by id '{}'", id);
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = createPreparedStatementFindByID(conn, id);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) { // Corrigido: sem ponto e vírgula
+                return Optional.of(
+                        Producer.builder()
+                                .id(rs.getInt("id"))
+                                .name(rs.getString("name"))
+                                .build());
+            }
+
+        } catch (SQLException e) {
+            log.error("Error while trying to find producer by id '{}'", id, e);
+        }
+        return Optional.empty();
+    }
+
+    private static PreparedStatement createPreparedStatementFindByID(Connection conn, Integer id) throws SQLException {
+        String sql = "SELECT id, name FROM anime_store.producer WHERE id = ?;";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, id); // Corrigido: setInt em vez de String.format
+        return ps;
+    }
+
+    public static void update(Producer producer) {
+        log.info("Updating producer '{}'", producer);
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = createPreparedStatementUpdate(conn, producer)) {
+            int rowsAffected = ps.executeUpdate();
+            log.info("Updated producer '{}', rows affected '{}'", producer.getId(), rowsAffected);
+        } catch (SQLException e) {
+            log.error("Error while trying to update producer '{}'", producer.getId(), e);
+        }
+    }
+
+    private static PreparedStatement createPreparedStatementUpdate(Connection conn, Producer producer) throws SQLException {
+        String sql = "UPDATE anime_store.producer SET name = ? WHERE id = ?;";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, producer.getName());
+        ps.setInt(2, producer.getId());
         return ps;
     }
 }
