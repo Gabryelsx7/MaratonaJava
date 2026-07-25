@@ -1,46 +1,50 @@
-🚀 Jornada Backend Java
-Este repositório foi criado para registrar minha evolução e estudos no ecossistema Java, englobando desde os fundamentos da linguagem até o desenvolvimento de APIs robustas e modelagem de bancos de dados.
+# 🚀 Jornada Backend Java
 
-🎓 Treinamento Atual
-Curso: Maratona Java Virado no Jiraya — DevDojo 🥋
+Este repositório registra minha evolução prática e contínua no ecossistema **Java**, desde os fundamentos da linguagem, orientada a objetos e testes unitários, até a transição para o desenvolvimento de APIs RESTful e bancos de dados.
 
-🧠 Bagagem de Conhecimentos
-Até o momento, solidifiquei conceitos essenciais como:
+---
 
-Sintaxe básica e lógica de programação aplicada
+## 🎓 Treinamento Concluído
+* **Curso:** Maratona Java Virado no Jiraya — DevDojo 🥋
+* **Status:** Concluído ✅
 
-Pilares da Programação Orientada a Objetos (POO)
+---
 
-Tratamento de exceções (Exceptions)
+## 🛠️ Tecnologias & Conceitos Dominados
+* **Lógica & Sintaxe:** Variáveis, Estruturas Condicionais, Laços de Repetição e Arrays.
+* **Orientação a Objetos (POO):** Classes, Atributos, Métodos, Sobrecarga, Modificadores de Acesso, Herança, Polimorfismo, Abstração e Interfaces.
+* **Tratamento de Exceções:** Handling de `Checked` e `Unchecked Exceptions` personalizadas.
+* **Java Moderno (Java 8+):** Lambdas, Method References, Streams API e `Optional`.
+* **Collections Framework:** `List`, `Set`, `Map` e algoritmos de ordenação.
+* **Testes Automatizados:** Cobertura de testes unitários e validações com **JUnit 5**.
 
-Manipulação de Utility Classes
+---
 
-🗺️ Guia de Estudos & Progresso
-Fase 1: Fundamentos de Java
-[x] Maratona DevDojo: Aulas 1 a 95
+## 🗺️ Guia de Estudos & Progresso
 
-[x] Resolução da lista de lógica de programação (DIO)
+### 🟢 Fase 1: Fundamentos de Java & POO
+- [x] Lógica de Programação e Sintaxe Básica
+- [x] Orientação a Objetos e Utility Classes
+- [x] Tratamento de Exceções & Collections Framework
+- [x] Concorrência, Streams API & Lambdas
+- [x] Testes Unitários com **JUnit 5**
+- [x] **Conclusão da Maratona Java (DevDojo)** 🎉
 
-[x] Maratona DevDojo: Aulas 96 a 143
+---
 
-[ ] Projeto Prático: Desenvolvimento de um Sistema de Cadastros
+### 🟡 Fase 2: Persistência & Bancos de Dados *(Próximos Passos)*
+- [ ] Fundamentos de SQL & Modelagem Relacional
+- [ ] Gerenciamento de dependências com **Maven / Gradle**
+- [ ] Integração com Banco de Dados via **JDBC / JPA / Hibernate**
 
-Fase 2: Persistência e Banco de Dados
-[ ] Maratona DevDojo: Aulas 144 a 217
+---
 
-[ ] Fundamentos de SQL e Modelagem de Bancos de Dados
+### 🔴 Fase 3: Ecossistema Spring & APIs REST
+- [ ] Arquitetura de Software & Princípios **SOLID**
+- [ ] Padrão Arquitetural **MVC**
+- [ ] Desenvolvimento de APIs RESTful com **Spring Boot**
+- [ ] Segurança com **Spring Security**
 
-[ ] Gerenciamento de dependências com Maven + Integração com Banco de Dados
+---
 
-Fase 3: Ecossistema Avançado e APIs
-[] Maratona DevDojo: Aulas 246 até o encerramento (Aula 285)
-
-[ ] Construção da Primeira API ⏳
-
-[ ] Domínio de Arquitetura e Teoria:
-
-Princípios do SOLID 🔒
-
-Padrão Arquitetural MVC 🔒
-
-[ ] Framework Spring 🔒
+> 💻 *Repositório em constante atualização conforme novos aprendizados no ecossistema Java/Spring.*
